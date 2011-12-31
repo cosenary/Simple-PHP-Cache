@@ -22,7 +22,7 @@ If you set a new Cache name with `setCache()`, a new cache file will be generate
 ### Setup Cache class ###
 
 It's not much trouble to setup the Cache.  
-First create a writable folder `cache/` and include the Cache class:
+First create a writable directory `cache/` and include the Cache class:
 
     <?php
         require_once 'cache.class.php';
@@ -93,17 +93,18 @@ It's the name of your Cache (standard Cache name is *'default'*):
     new Cache(array(
       'name'      => 'YOUR-CACHE-NAME',
       'path'      => 'cache/',
-      'extension' => 'cache'
+      'extension' => '.cache'
     ));
 
 If you don't define a Cache name with the constructor or the `setCache()` method, it'll be 'default'.
 
 ### Store data ###
 
-`store($key, $data)`
+`store($key, $data, <$expiration>)`
 
 - The `key` value defines a tag with which the cached data will be associated.
 - The `data` value can either be a *string* or an *array*.
+- The `expiration` value allows you to define a expiration time.
 
 To change data you can override it by using the same key identifier.  
 Beside the data, the Cache will also store a timestamp.
@@ -113,6 +114,7 @@ A sample Cache entry looks like this:
     {
       "christmas": {
         "time": 1324664631,
+        "expire" => 28000,
         "data": "A great time to bake cookies."
       }
     }
@@ -126,9 +128,15 @@ To retrieve the timestamp of a key, set the second parameter to `true`.
 
 ### Erase data ###
 
-`erase($key)`  
+For erasing cached data are these three methods available:
 
-Delete cached data entry by its key.
+- `erase($key)` Erases a single entry by its key.
+- `eraseExpired()` Erases all expired entries.
+
+    // Returns the count of erased entries
+    echo $c->eraseExpired().' expired items erased!';
+
+- `eraseAll()` Erases all entries from the Cache file.
 
 ### Check cached data ###
 
@@ -153,7 +161,7 @@ The path to the Cache folder must end with a backslash: `my_path_to_the_cache_fo
 
 `getCacheDir()`  
 
-The method returns the path to your current Cache file (the Cache name is be always sh1 encoded):
+The method returns the path to your current Cache file (the Cache name is always sh1 encoded):
 
     cache/7505d64a54e061b7acd54ccd58b49dc43500b635.cache
 
@@ -164,6 +172,13 @@ The method returns the path to your current Cache file (the Cache name is be alw
 > If you've done one, please let me know.
 
 ## History ##
+
+**Simple Cache 1.1 - 01/01/2012**
+
+- `change` The extension config has to start now with a dot.
+- `feature` Added expiration handling to the `store()` method
+- `feature` Added the methods `eraseExpired()` and `eraseAll()`
+- `feature` Added method to make sure that a writable directory exists
 
 **Simple Cache 1.0 - 29/12/2011**
 
@@ -189,5 +204,5 @@ The method returns the path to your current Cache file (the Cache name is be alw
 
 ## Credits ##
 
-Copyright (c) 2011 - Programmed by Christian Metz / @cosenary[](http://twitter.com/cosenary)  
+Copyright (c) 2011/12 - Programmed by Christian Metz / @cosenary[http://twitter.com/cosenary](http://twitter.com/cosenary)  
 Released under the [BSD License](http://www.opensource.org/licenses/bsd-license.php).

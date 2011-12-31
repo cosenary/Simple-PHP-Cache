@@ -2,12 +2,13 @@
 
 /**
  * Simple Cache class
- * API Documentation:
- *
+ * API Documentation: https://github.com/cosenary/Simple-PHP-Cache
+ * 
  * @author Christian Metz
  * @since 22.12.2011
  * @copyright Christian Metz - MetzWeb Networks
- * @version 1.0
+ * @version 1.1
+ * @license BSD http://www.opensource.org/licenses/bsd-license.php
  */
 
 class Cache {
@@ -31,7 +32,7 @@ class Cache {
    *
    * @var string
    */
-  private $_extension = 'cache';
+  private $_extension = '.cache';
 
   /**
    * Default constructor
@@ -69,11 +70,13 @@ class Cache {
    *
    * @param string $key
    * @param mixed $data
+   * @param integer [optional] $expiration
    * @return object
    */
-  public function store($key, $data) {
+  public function store($key, $data, $expiration = 0) {
     $storeData = array(
       'time' => time(),
+      'expire' => $expiration,
       'data' => $data
     );
     if (true === is_array($this->_loadCache())) {
@@ -107,8 +110,8 @@ class Cache {
    * @return object
    */
   public function erase($key) {
-    if (true === is_array($this->_loadCache())) {
-      $cacheData = $this->_loadCache();
+    $cacheData = $this->_loadCache();
+    if (true === is_array($cacheData)) {
       if (true === isset($cacheData[$key])) {
         unset($cacheData[$key]);
         $cacheData = json_encode($cacheData);
@@ -116,6 +119,43 @@ class Cache {
       } else {
         throw new Exception("Error: erase() - Key '{$key}' not found.");
       }
+    }
+    return $this;
+  }
+
+  /**
+   * Erase all expired entries
+   * 
+   * @return integer
+   */
+  public function eraseExpired() {
+    $cacheData = $this->_loadCache();
+    if (true === is_array($cacheData)) {
+      $counter = 0;
+      foreach ($cacheData as $key => $entry) {
+        if (true === $this->_checkExpired($entry['time'], $entry['expire'])) {
+          unset($cacheData[$key]);
+          $counter++;
+        }
+      }
+      if ($counter > 0) {
+        $cacheData = json_encode($cacheData);
+        file_put_contents($this->getCacheDir(), $cacheData);
+      }
+      return $counter;
+    }
+  }
+
+  /**
+   * Erase all cached entries
+   * 
+   * @return object
+   */
+  public function eraseAll() {
+    $cacheDir = $this->getCacheDir();
+    if (true === file_exists($cacheDir)) {
+      $cacheFile = fopen($cacheDir, 'w');
+      fclose($cacheFile);
     }
     return $this;
   }
@@ -140,9 +180,11 @@ class Cache {
    * @return string
    */
   public function getCacheDir() {
-    $filename = $this->getCache();
-    $filename = preg_replace('/[^0-9a-z\.\_\-]/i', '', strtolower($filename));
-    return $this->getCachePath().$this->_getHash($filename).'.'.$this->getExtension();
+    if (true === $this->_checkCacheDir()) {
+      $filename = $this->getCache();
+      $filename = preg_replace('/[^0-9a-z\.\_\-]/i', '', strtolower($filename));
+      return $this->getCachePath().$this->_getHash($filename).$this->getExtension();
+    }
   }
 
   /**
@@ -152,6 +194,38 @@ class Cache {
    */
   private function _getHash($filename) {
     return sha1($filename);
+  }
+
+  /**
+   * Check whether a timestamp is still in the duration 
+   * 
+   * @param integer $timestamp
+   * @param integer $expiration
+   * @return boolean
+   */
+  private function _checkExpired($timestamp, $expiration) {
+    $result = false;
+    if ($expiration !== 0) {
+      $timeDiff = time() - $timestamp;
+      ($timeDiff > $expiration) ? $result = true : $result = false;
+    }
+    return $result;
+  }
+
+  /**
+   * Check if a writable cache directory exists and if not create a new one
+   * 
+   * @return boolean
+   */
+  private function _checkCacheDir() {
+    if (!is_dir($this->getCachePath()) && !mkdir($this->getCachePath(), 0775, true)) {
+      throw new Exception('Unable to create cache directory '.$this->getCachePath());
+    } elseif (!is_readable($this->getCachePath()) || !is_writable($this->getCachePath())) {
+      if (!chmod($this->getCachePath(), 0775)) {
+        throw new Exception($this->getCachePath().' must be readable and writeable');
+      }
+    }
+    return true;
   }
 
   /**
