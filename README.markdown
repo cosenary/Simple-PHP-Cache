@@ -5,7 +5,7 @@
 A light, simple but powerful PHP5 Cache Class which uses the filesystem for caching.  
 Your feedback is always welcome.
 
-> This is a first Alpha version!
+> This is still a Alpha version!
 
 ## Requirements ##
 
@@ -114,7 +114,7 @@ A sample Cache entry looks like this:
     {
       "christmas": {
         "time": 1324664631,
-        "expire" => 28000,
+        "expire": 28000,
         "data": "A great time to bake cookies."
       }
     }
@@ -204,5 +204,5 @@ The method returns the path to your current Cache file (the Cache name is always
 
 ## Credits ##
 
-Copyright (c) 2011/12 - Programmed by Christian Metz / @cosenary[http://twitter.com/cosenary](http://twitter.com/cosenary)  
+Copyright (c) 2012 - Programmed by Christian Metz / [@cosenary](http://twitter.com/cosenary)  
 Released under the [BSD License](http://www.opensource.org/licenses/bsd-license.php).
