@@ -59,7 +59,7 @@ class Cache {
    * @return boolean
    */
   public function isCached($key) {
-    if (true === $this->_loadCache()) {
+    if (false != $this->_loadCache()) {
       $cachedData = $this->_loadCache();
       return isset($cachedData[$key]['data']);
     }
