@@ -24,58 +24,64 @@ If you set a new Cache name with `setCache()`, a new cache file will be generate
 It's not much trouble to setup the Cache.  
 First create a writable directory `cache/` and include the Cache class:
 
-    <?php
-        require_once 'cache.class.php';
-        
-        // Setup 'default' Cache
-        $c = new Cache();
-    ?>
+```php
+<?php
+    require_once 'cache.class.php';
+    
+    // Setup 'default' Cache
+    $c = new Cache();
+?>
+```
 
 Now we've setup the Cache instance and can start caching!  
 
-    <?php
-        // Store a string
-        $c->store('hello', 'Hello World!');
-        
-        // Generate a new Cache file with the name 'newcache'
-        $c->setCache('newcache');
-        
-        // Store an array
-        $c->store('movies', array(
-          'description' => 'Movies I like',
-          'Action' => array(
-            'Tropic Thunder',
-            'Bad Boys',
-            'Crank'
-          )
-        ));
-        
-        // Get cached data by its key
-        $result = $c->retrieve('movies');
-        
-          // Display the cached array
-          echo '<pre>';
-          print_r($result);
-          echo '<pre>';
-        
-        // Switch back to the first Cache
-        $c->setCache('mycache');
-        
-        // Update entry simply by overwriting an existing key
-        $c->store('hello', 'Hello everybody out there!');
-        
-        // Erase entry by its key
-        $c->erase('hello');
-    ?>
+```php
+<?php
+    // Store a string
+    $c->store('hello', 'Hello World!');
+    
+    // Generate a new Cache file with the name 'newcache'
+    $c->setCache('newcache');
+    
+    // Store an array
+    $c->store('movies', array(
+      'description' => 'Movies I like',
+      'Action' => array(
+        'Tropic Thunder',
+        'Bad Boys',
+        'Crank'
+      )
+    ));
+    
+    // Get cached data by its key
+    $result = $c->retrieve('movies');
+    
+    // Display the cached array
+    echo '<pre>';
+    print_r($result);
+    echo '<pre>';
+    
+    // Switch back to the first Cache
+    $c->setCache('mycache');
+    
+    // Update entry simply by overwriting an existing key
+    $c->store('hello', 'Hello everybody out there!');
+    
+    // Erase entry by its key
+    $c->erase('hello');
+?>
+```
 
 You can also make use of the Method Chaining feature, introduced in PHP5.  
 So you can do something like that:
 
-    <?php
-        $c->setCache('mycache')      // Generate new file
-          ->store('hello', 'world')  // Store data sting
-          ->retrieve('hello');       // Retrieve cached data
-    ?>
+```php
+<?php
+    $c->setCache('mycache')      // Generate new file
+      ->store('hello', 'world')  // Store data sting
+      ->retrieve('hello');       // Retrieve cached data
+?>
+```
 
 ## Available methods ##
 
@@ -104,9 +110,9 @@ If you don't define a Cache name with the constructor or the `setCache()` method
 
 - The `key` value defines a tag with which the cached data will be associated.
 - The `data` value can either be a *string* or an *array*.
-- The `expiration` value allows you to define a expiration time.
+- The `expiration` value allows you to define an expiration time.
 
-To change data you can override it by using the same key identifier.  
+To change data you can overwrite it by using the same key identifier.  
 Beside the data, the Cache will also store a timestamp.
 
 A sample Cache entry looks like this:
@@ -131,12 +137,15 @@ To retrieve the timestamp of a key, set the second parameter to `true`.
 For erasing cached data are these three methods available:
 
 - `erase($key)` Erases a single entry by its key.
+- `eraseAll()` Erases all entries from the Cache file.
 - `eraseExpired()` Erases all expired entries.
 
-    // Returns the count of erased entries
-    echo $c->eraseExpired().' expired items erased!';
-
-- `eraseAll()` Erases all entries from the Cache file.
+```php
+<?php
+    // Returns the count of erased entries  
+    echo $c->eraseExpired() . ' expired items erased!';
+?>
+```
 
 ### Check cached data ###
 
@@ -172,6 +181,10 @@ The method returns the path to your current Cache file (the Cache name is always
 > If you've done one, please let me know.
 
 ## History ##
+
+**Simple Cache 1.2 - 09/05/2012**
+- `update` Formatted code
+- `bug` Fixed isCached function so that it functions as expected (thanks TigerWolf).
 
 **Simple Cache 1.1 - 01/01/2012**
 

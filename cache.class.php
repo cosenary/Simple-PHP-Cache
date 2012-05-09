@@ -7,7 +7,7 @@
  * @author Christian Metz
  * @since 22.12.2011
  * @copyright Christian Metz - MetzWeb Networks
- * @version 1.1
+ * @version 1.2
  * @license BSD http://www.opensource.org/licenses/bsd-license.php
  */
 
@@ -37,7 +37,7 @@ class Cache {
   /**
    * Default constructor
    *
-   * @param string/array [optional] $config
+   * @param string|array [optional] $config
    * @return void
    */
   public function __construct($config = null) {
@@ -59,7 +59,7 @@ class Cache {
    * @return boolean
    */
   public function isCached($key) {
-    if (true === $this->_loadCache()) {
+    if (false != $this->_loadCache()) {
       $cachedData = $this->_loadCache();
       return isset($cachedData[$key]['data']);
     }
@@ -75,9 +75,9 @@ class Cache {
    */
   public function store($key, $data, $expiration = 0) {
     $storeData = array(
-      'time' => time(),
+      'time'   => time(),
       'expire' => $expiration,
-      'data' => $data
+      'data'   => $data
     );
     if (true === is_array($this->_loadCache())) {
       $dataArray = $this->_loadCache();
@@ -183,7 +183,7 @@ class Cache {
     if (true === $this->_checkCacheDir()) {
       $filename = $this->getCache();
       $filename = preg_replace('/[^0-9a-z\.\_\-]/i', '', strtolower($filename));
-      return $this->getCachePath().$this->_getHash($filename).$this->getExtension();
+      return $this->getCachePath() . $this->_getHash($filename) . $this->getExtension();
     }
   }
 
@@ -219,10 +219,10 @@ class Cache {
    */
   private function _checkCacheDir() {
     if (!is_dir($this->getCachePath()) && !mkdir($this->getCachePath(), 0775, true)) {
-      throw new Exception('Unable to create cache directory '.$this->getCachePath());
+      throw new Exception('Unable to create cache directory ' . $this->getCachePath());
     } elseif (!is_readable($this->getCachePath()) || !is_writable($this->getCachePath())) {
       if (!chmod($this->getCachePath(), 0775)) {
-        throw new Exception($this->getCachePath().' must be readable and writeable');
+        throw new Exception($this->getCachePath() . ' must be readable and writeable');
       }
     }
     return true;
@@ -287,6 +287,5 @@ class Cache {
   public function getExtension() {
     return $this->_extension;
   }
-}
 
-?>
+}
