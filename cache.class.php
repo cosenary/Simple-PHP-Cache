@@ -104,6 +104,26 @@ class Cache {
   }
 
   /**
+   * Retrieve all cached data
+   * 
+   * @return array
+   */
+  public function retrieveAll($meta = false) {
+    if ($meta === false) {
+      $results = array();
+      $cachedData = $this->_loadCache();
+      if ($cachedData) {
+        foreach ($cachedData as $k => $v) {
+          $results[$k] = $v['data'];
+        }
+      }
+      return $results;
+    } else {
+      return $this->_loadCache();
+    }
+  }
+
+  /**
    * Erase cached entry by its key
    * 
    * @param string $key
