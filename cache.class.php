@@ -7,7 +7,7 @@
  * @author Christian Metz
  * @since 22.12.2011
  * @copyright Christian Metz - MetzWeb Networks
- * @version 1.2
+ * @version 1.3
  * @license BSD http://www.opensource.org/licenses/bsd-license.php
  */
 
@@ -106,6 +106,7 @@ class Cache {
   /**
    * Retrieve all cached data
    * 
+   * @param boolean [optional] $meta
    * @return array
    */
   public function retrieveAll($meta = false) {

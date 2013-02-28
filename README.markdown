@@ -5,8 +5,6 @@
 A light, simple but powerful PHP5 Cache Class which uses the filesystem for caching.  
 Your feedback is always welcome.
 
-> This is still a Alpha version!
-
 ## Requirements ##
 
 - PHP 5.2.x or higher
@@ -15,7 +13,7 @@ Your feedback is always welcome.
 
 Basically the caching class stores its data in files in the JSON format. These files will be created if you store data under a Cache name.
 
-If you set a new Cache name with `setCache()`, a new cache file will be generated. The Cache will store all further data in the new file. The Setter method allows you to switch between the differnet Cache files.
+If you set a new Cache name with `setCache()`, a new cache file will be generated. The Cache will store all further data in the new file. The Setter method allows you to switch between the different Cache files.
 
 ## Quick Start ##
 
@@ -117,20 +115,26 @@ Beside the data, the Cache will also store a timestamp.
 
 A sample Cache entry looks like this:
 
-    {
-      "christmas": {
-        "time": 1324664631,
-        "expire": 28000,
-        "data": "A great time to bake cookies."
-      }
-    }
+```json
+{
+  "christmas": {
+    "time": 1324664631,
+    "expire": 28000,
+    "data": "A great time to bake cookies."
+  }
+}
+```
 
 ### Retrieve data ###
 
-`retrieve($key, <true>/<false>)`  
+`retrieve($key, <$timestamp>)`  
 
-Get cached data or time by its key.  
+Get particular cached data by its key.  
 To retrieve the timestamp of a key, set the second parameter to `true`.
+
+`retrieveAll(<$meta>)`  
+
+This allows you retrieve all the cached data at once. You get the meta data by setting the `$meta` argument to `true`.
 
 ### Erase data ###
 
@@ -151,7 +155,7 @@ For erasing cached data are these three methods available:
 
 `isCached($key)`  
 
-Check whether any data is accociated with the given key.  
+Check whether any data is associated with the given key.  
 Returns `true` or `false`.
 
 ### Set Cache name ###
@@ -182,9 +186,13 @@ The method returns the path to your current Cache file (the Cache name is always
 
 ## History ##
 
+**Simple Cache 1.3 - 28/02/2013**
+- `update` Updated docs for the added `retrieveAll()` method.
+- `feature` Added `retrieveAll()` method (thanks @rpnzl).
+
 **Simple Cache 1.2 - 09/05/2012**
 - `update` Formatted code
-- `bug` Fixed isCached function so that it functions as expected (thanks TigerWolf).
+- `bug` Fixed isCached function so that it functions as expected (thanks @TigerWolf).
 
 **Simple Cache 1.1 - 01/01/2012**
 
@@ -217,5 +225,5 @@ The method returns the path to your current Cache file (the Cache name is always
 
 ## Credits ##
 
-Copyright (c) 2012 - Programmed by Christian Metz / [@cosenary](http://twitter.com/cosenary)  
+Copyright (c) 2011-2013 - Programmed by Christian Metz / [@cosenary](http://twitter.com/cosenary)  
 Released under the [BSD License](http://www.opensource.org/licenses/bsd-license.php).
