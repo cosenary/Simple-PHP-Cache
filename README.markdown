@@ -26,7 +26,7 @@ First create a writable directory `cache/` and include the Cache class:
 <?php
     require_once 'cache.class.php';
     
-    // Setup 'default' Cache
+    // setup 'default' cache
     $c = new Cache();
 ?>
 ```
@@ -35,37 +35,40 @@ Now we've setup the Cache instance and can start caching!
 
 ```php
 <?php
-    // Store a string
+    // store a string
     $c->store('hello', 'Hello World!');
     
-    // Generate a new Cache file with the name 'newcache'
+    // generate a new cache file with the name 'newcache'
     $c->setCache('newcache');
     
-    // Store an array
+    // store an array
     $c->store('movies', array(
-      'description' => 'Movies I like',
-      'Action' => array(
+      'description' => 'Movies on TV',
+      'action' => array(
         'Tropic Thunder',
         'Bad Boys',
         'Crank'
       )
     ));
     
-    // Get cached data by its key
+    // get cached data by its key
     $result = $c->retrieve('movies');
     
-    // Display the cached array
+    // display the cached array
     echo '<pre>';
     print_r($result);
     echo '<pre>';
     
-    // Switch back to the first Cache
+    // grab array entry
+    $description = $result['description'];
+    
+    // switch back to the first cache
     $c->setCache('mycache');
     
-    // Update entry simply by overwriting an existing key
+    // update entry by simply overwriting an existing key
     $c->store('hello', 'Hello everybody out there!');
     
-    // Erase entry by its key
+    // erase entry by its key
     $c->erase('hello');
 ?>
 ```
@@ -75,9 +78,9 @@ So you can do something like that:
 
 ```php
 <?php
-    $c->setCache('mycache')      // Generate new file
-      ->store('hello', 'world')  // Store data sting
-      ->retrieve('hello');       // Retrieve cached data
+    $c->setCache('mycache')      // generate new file
+      ->store('hello', 'world')  // store data sting
+      ->retrieve('hello');       // retrieve cached data
 ?>
 ```
 
@@ -146,7 +149,7 @@ For erasing cached data are these three methods available:
 
 ```php
 <?php
-    // Returns the count of erased entries  
+    // returns the count of erased entries  
     echo $c->eraseExpired() . ' expired items erased!';
 ?>
 ```
@@ -176,21 +179,23 @@ The path to the Cache folder must end with a backslash: `my_path_to_the_cache_fo
 
 The method returns the path to your current Cache file (the Cache name is always sh1 encoded):
 
-    cache/7505d64a54e061b7acd54ccd58b49dc43500b635.cache
+```
+cache/7505d64a54e061b7acd54ccd58b49dc43500b635.cache
+```
 
 ## Benchmarks ##
-
-*Coming soon...*
 
 > If you've done one, please let me know.
 
 ## History ##
 
 **Simple Cache 1.3 - 28/02/2013**
+
 - `update` Updated docs for the added `retrieveAll()` method.
 - `feature` Added `retrieveAll()` method (thanks @rpnzl).
 
 **Simple Cache 1.2 - 09/05/2012**
+
 - `update` Formatted code
 - `bug` Fixed isCached function so that it functions as expected (thanks @TigerWolf).
 
