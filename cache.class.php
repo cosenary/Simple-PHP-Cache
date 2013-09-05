@@ -100,6 +100,9 @@ class Cache {
   public function retrieve($key, $timestamp = false) {
     $cachedData = $this->_loadCache();
     (false === $timestamp) ? $type = 'data' : $type = 'time';
+    # this is bug-prune what if the [$key][$type] does not exists
+    # fail-safe :
+    if(!isset($cachedData[$key][$type])) return NULL;
     return $cachedData[$key][$type];
   }
 
