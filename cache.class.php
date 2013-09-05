@@ -79,8 +79,8 @@ class Cache {
       'expire' => $expiration,
       'data'   => $data
     );
-    if (true === is_array($this->_loadCache())) {
-      $dataArray = $this->_loadCache();
+    $dataArray = $this->_loadCache();
+    if (true === is_array($dataArray)) {
       $dataArray[$key] = $storeData;
     } else {
       $dataArray = array($key => $storeData);
