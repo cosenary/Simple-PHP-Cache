@@ -189,6 +189,14 @@ cache/7505d64a54e061b7acd54ccd58b49dc43500b635.cache
 
 ## History ##
 
+> Upcoming: Simple Cache 2.0  
+> Implementation of an internal "soft cache", hash-sum handling and the switch to serialization. Thanks @dariushha for his contribution!
+
+**Simple Cache 1.4 - 8/09/2013**
+
+- `bug` Fixed loading file twice in `store()` method.
+- `bug` Fixed `retrieve()` method - made it fail safe (thanks @dariushha). 
+
 **Simple Cache 1.3 - 28/02/2013**
 
 - `update` Updated docs for the added `retrieveAll()` method.
@@ -197,7 +205,7 @@ cache/7505d64a54e061b7acd54ccd58b49dc43500b635.cache
 **Simple Cache 1.2 - 09/05/2012**
 
 - `update` Formatted code
-- `bug` Fixed isCached function so that it functions as expected (thanks @TigerWolf).
+- `bug` Fixed `isCached()` method so that it works as expected (thanks @TigerWolf).
 
 **Simple Cache 1.1 - 01/01/2012**
 
