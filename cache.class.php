@@ -7,7 +7,7 @@
  * @author Christian Metz
  * @since 22.12.2011
  * @copyright Christian Metz - MetzWeb Networks
- * @version 1.3
+ * @version 1.4
  * @license BSD http://www.opensource.org/licenses/bsd-license.php
  */
 
@@ -100,6 +100,7 @@ class Cache {
   public function retrieve($key, $timestamp = false) {
     $cachedData = $this->_loadCache();
     (false === $timestamp) ? $type = 'data' : $type = 'time';
+    if (!isset($cachedData[$key][$type])) return null; 
     return $cachedData[$key][$type];
   }
 
