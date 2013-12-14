@@ -77,7 +77,7 @@ class Cache {
     $storeData = array(
       'time'   => time(),
       'expire' => $expiration,
-      'data'   => $data
+      'data'   => serialize($data)
     );
     $dataArray = $this->_loadCache();
     if (true === is_array($dataArray)) {
@@ -101,7 +101,7 @@ class Cache {
     $cachedData = $this->_loadCache();
     (false === $timestamp) ? $type = 'data' : $type = 'time';
     if (!isset($cachedData[$key][$type])) return null; 
-    return $cachedData[$key][$type];
+    return unserialize($cachedData[$key][$type]);
   }
 
   /**
