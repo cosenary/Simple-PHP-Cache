@@ -7,7 +7,7 @@
  * @author Christian Metz
  * @since 22.12.2011
  * @copyright Christian Metz - MetzWeb Networks
- * @version 1.4
+ * @version 1.6
  * @license BSD http://www.opensource.org/licenses/bsd-license.php
  */
 
@@ -116,7 +116,7 @@ class Cache {
       $cachedData = $this->_loadCache();
       if ($cachedData) {
         foreach ($cachedData as $k => $v) {
-          $results[$k] = $v['data'];
+          $results[$k] = unserialize($v['data']);
         }
       }
       return $results;

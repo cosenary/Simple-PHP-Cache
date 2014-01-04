@@ -79,7 +79,7 @@ So you can do something like that:
 ```php
 <?php
     $c->setCache('mycache')      // generate new file
-      ->store('hello', 'world')  // store data sting
+      ->store('hello', 'world')  // store data string
       ->retrieve('hello');       // retrieve cached data
 ?>
 ```
@@ -110,7 +110,7 @@ If you don't define a Cache name with the constructor or the `setCache()` method
 `store($key, $data, <$expiration>)`
 
 - The `key` value defines a tag with which the cached data will be associated.
-- The `data` value can either be a *string* or an *array*.
+- The `data` value can be any type of object (will be serialized).
 - The `expiration` value allows you to define an expiration time.
 
 To change data you can overwrite it by using the same key identifier.  
@@ -123,7 +123,7 @@ A sample Cache entry looks like this:
   "christmas": {
     "time": 1324664631,
     "expire": 28000,
-    "data": "A great time to bake cookies."
+    "data": "s:29:"A great time to bake cookies.";" // serialized
   }
 }
 ```
@@ -192,7 +192,16 @@ cache/7505d64a54e061b7acd54ccd58b49dc43500b635.cache
 > Upcoming: Simple Cache 2.0  
 > Implementation of an internal "soft cache", hash-sum handling and the switch to serialization. Thanks @dariushha for his contribution!
 
-**Simple Cache 1.4 - 8/09/2013**
+**Simple Cache 1.6 - 04/01/2014**
+
+- `update` Updated docs.
+- `bug` Fixed `retrieveAll()` method to unserialize data.
+
+**Simple Cache 1.5 - 01/01/2014**
+
+- `feature` added `serialize` / `unserialize` to store any kind of data.
+
+**Simple Cache 1.4 - 08/09/2013**
 
 - `bug` Fixed loading file twice in `store()` method.
 - `bug` Fixed `retrieve()` method - made it fail safe (thanks @dariushha). 
