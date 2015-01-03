@@ -1,0 +1,24 @@
+{
+	"name": "cosenary/simple-php-cache",
+	"type": "library",
+	"description": "A light, simple but powerful PHP5 Cache Class which uses the filesystem for caching.",
+	"keywords": ["cache", "simple", "filesystem", "json"],
+	"homepage": "https://github.com/cosenary/Simple-PHP-Cache",
+	"license": "BSD",
+	"authors": [
+		{
+			"name": "Christian Metz",
+			"email": "christian-metz1@gmx.net",
+			"homepage": "http://metzweb.net"
+		}
+	],
+	"require": {
+		"php": ">=5.2.0",
+		"ext-curl": "*"
+	},
+	"autoload": {
+		"classmap": [
+			"."
+		]
+	}
+}
