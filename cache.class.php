@@ -35,6 +35,15 @@ class Cache {
   private $_extension = '.cache';
 
   /**
+   * Determines if expired items are auto erased
+   *
+   * @var boolean
+   */
+
+  private $_autoEraseExpired = FALSE;
+  
+  
+  /**
    * Default constructor
    *
    * @param string|array [optional] $config
@@ -59,6 +68,10 @@ class Cache {
    * @return boolean
    */
   public function isCached($key) {
+    if (TRUE === $this->autoEraseExpired){
+      $this->eraseExpired();
+    }
+    
     if (false != $this->_loadCache()) {
       $cachedData = $this->_loadCache();
       return isset($cachedData[$key]['data']);
@@ -98,6 +111,11 @@ class Cache {
    * @return string
    */
   public function retrieve($key, $timestamp = false) {
+
+    if (TRUE === $this->autoEraseExpired){
+      $this->eraseExpired();
+    }
+    
     $cachedData = $this->_loadCache();
     (false === $timestamp) ? $type = 'data' : $type = 'time';
     if (!isset($cachedData[$key][$type])) return null; 
@@ -111,6 +129,11 @@ class Cache {
    * @return array
    */
   public function retrieveAll($meta = false) {
+
+    if (TRUE === $this->autoEraseExpired){
+      $this->eraseExpired();
+    }
+    
     if ($meta === false) {
       $results = array();
       $cachedData = $this->_loadCache();
@@ -209,6 +232,17 @@ class Cache {
     }
   }
 
+
+  /**
+   * Set auto erase behavior
+   * 
+   * @return boolean
+   */
+
+  public function autoEraseExpired($flag){
+    $this->autoEraseExpired = $flag;
+    return $flag;
+  }
   /**
    * Get the filename hash
    * 

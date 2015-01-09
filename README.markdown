@@ -154,6 +154,9 @@ For erasing cached data are these three methods available:
 ?>
 ```
 
+- `autoEraseExpired(<$flag>)` Expired items will automatically erase
+  when calling `isCached()`, `retreive()`, and `retreiveAll()`
+
 ### Check cached data ###
 
 `isCached($key)`  
