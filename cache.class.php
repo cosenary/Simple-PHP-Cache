@@ -85,7 +85,7 @@ class Cache {
     } else {
       $dataArray = array($key => $storeData);
     }
-    $cacheData = json_encode($dataArray);
+    $cacheData = serialize($dataArray);
     file_put_contents($this->getCacheDir(), $cacheData);
     return $this;
   }
@@ -136,7 +136,7 @@ class Cache {
     if (true === is_array($cacheData)) {
       if (true === isset($cacheData[$key])) {
         unset($cacheData[$key]);
-        $cacheData = json_encode($cacheData);
+        $cacheData = serialize($cacheData);
         file_put_contents($this->getCacheDir(), $cacheData);
       } else {
         throw new Exception("Error: erase() - Key '{$key}' not found.");
@@ -161,7 +161,7 @@ class Cache {
         }
       }
       if ($counter > 0) {
-        $cacheData = json_encode($cacheData);
+        $cacheData = serialize($cacheData);
         file_put_contents($this->getCacheDir(), $cacheData);
       }
       return $counter;
@@ -190,7 +190,7 @@ class Cache {
   private function _loadCache() {
     if (true === file_exists($this->getCacheDir())) {
       $file = file_get_contents($this->getCacheDir());
-      return json_decode($file, true);
+      return unserialize($file, true);
     } else {
       return false;
     }
