@@ -251,6 +251,28 @@ class Cache {
   }
 
   /**
+   * Check if cache data expired
+   * 
+   * @param string $key
+   * @return boolean
+   */
+  public function isExpired($key) {
+    $cacheData = $this->_loadCache();
+    if (true === is_array($cacheData)) {
+      $timeDiff = time() - $cacheData[$key]['time'];
+      if (($timeDiff > $cacheData[$key]['expire'])) {
+        return true;
+      } else {
+        return false;
+      }
+      
+    }
+    throw new Exception("Error: isExpired() - Key '{$key}' not found.");
+  }
+  
+  
+
+  /**
    * Cache path Setter
    * 
    * @param string $path
