@@ -52,7 +52,7 @@ class Cache {
     }
   }
 
-    /**
+  /**
    * Check whether data accociated with a key
    *
    * @param string $key
