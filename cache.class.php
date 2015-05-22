@@ -11,6 +11,8 @@
  * @license BSD http://www.opensource.org/licenses/bsd-license.php
  */
 
+namespace TiagoGouvea;
+
 class Cache {
 
   /**
@@ -52,7 +54,7 @@ class Cache {
     }
   }
 
-  /**
+    /**
    * Check whether data accociated with a key
    *
    * @param string $key
@@ -61,7 +63,12 @@ class Cache {
   public function isCached($key) {
     if (false != $this->_loadCache()) {
       $cachedData = $this->_loadCache();
-      return isset($cachedData[$key]['data']);
+      $entry = $cachedData[$key];
+      if ($entry && true === $this->_checkExpired($entry['time'], $entry['expire'])) {
+        return false;
+      } else {
+        return isset($cachedData[$key]['data']);
+      }
     }
   }
 
@@ -100,7 +107,12 @@ class Cache {
   public function retrieve($key, $timestamp = false) {
     $cachedData = $this->_loadCache();
     (false === $timestamp) ? $type = 'data' : $type = 'time';
-    if (!isset($cachedData[$key][$type])) return null; 
+    if (!isset($cachedData[$key][$type])) return null;
+    if (false === $timestamp){
+      $entry = $cachedData[$key];
+      if ($entry && true === $this->_checkExpired($entry['time'], $entry['expire']))
+        return null;
+    }
     return unserialize($cachedData[$key][$type]);
   }
 
