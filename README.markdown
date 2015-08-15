@@ -1,9 +1,10 @@
 # Simple PHP Cache #
 
+Forked from [cosenary/Simple-PHP-Cache](https://github.com/cosenary/Simple-PHP-Cache)
+
 ## About ##
 
-A light, simple but powerful PHP5 Cache Class which uses the filesystem for caching.  
-Your feedback is always welcome.
+A light, simple but powerful PHP5 Cache Class which uses the filesystem for caching.
 
 ## Requirements ##
 
