@@ -1,5 +1,5 @@
 {
-  "name": "TiagoGouvea/Simple-PHP-Cache",
+  "name": "tiagogouvea/simple-php-cache",
   "description": "Simple PHP Cache class using file system",
   "require": {
     "php": ">=5.0.0"
