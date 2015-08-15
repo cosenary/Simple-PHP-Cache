@@ -18,6 +18,16 @@ If you set a new Cache name with `setCache()`, a new cache file will be generate
 
 ## Quick Start ##
 
+Add to your composer.json:
+
+{
+    "require": {
+        "tiagogougea/simple-php-cache": "*"
+    }
+}
+
+And run "composer update" or just run "composer require tiagogouvea/simple-php-cache".
+
 ### Setup Cache class ###
 
 It's not much trouble to setup the Cache.  
