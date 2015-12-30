@@ -141,7 +141,7 @@ This allows you retrieve all the cached data at once. You get the meta data by s
 
 ### Erase data ###
 
-For erasing cached data are these three methods available:
+For erasing cached data are these four methods available:
 
 - `erase($key)` Erases a single entry by its key.
 - `eraseAll()` Erases all entries from the Cache file.
@@ -153,6 +153,8 @@ For erasing cached data are these three methods available:
     echo $c->eraseExpired() . ' expired items erased!';
 ?>
 ```
+
+- `autoEraseExpired(<$flag>)` Erases items automatically when calling `isCached()`, `retreive()`, and `retreiveAll()`
 
 ### Check cached data ###
 
