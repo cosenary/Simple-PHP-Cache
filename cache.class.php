@@ -38,13 +38,20 @@ class Cache
     private $_extension = '.cache';
 
     /**
+     * Determines if expired items are auto erased.
+     *
+     * @var bool
+     */
+    private $_autoEraseExpired = false;
+
+    /**
      * Default constructor.
      *
      * @param string|array [optional] $config
      */
     public function __construct($config = null)
     {
-        if (true === isset($config)) {
+        if (isset($config) === true) {
             if (is_string($config)) {
                 $this->setCache($config);
             } elseif (is_array($config)) {
@@ -64,7 +71,11 @@ class Cache
      */
     public function isCached($key)
     {
-        if (false != $this->_loadCache()) {
+        if ($this->_autoEraseExpired === true) {
+            $this->eraseExpired();
+        }
+
+        if ($this->_loadCache() != false) {
             $cachedData = $this->_loadCache();
 
             return isset($cachedData[$key]['data']);
@@ -87,12 +98,15 @@ class Cache
             'expire' => $expiration,
             'data' => serialize($data),
         );
+
         $dataArray = $this->_loadCache();
-        if (true === is_array($dataArray)) {
+
+        if (is_array($dataArray) === true) {
             $dataArray[$key] = $storeData;
         } else {
             $dataArray = array($key => $storeData);
         }
+
         $cacheData = json_encode($dataArray);
         file_put_contents($this->getCacheDir(), $cacheData);
 
@@ -109,8 +123,13 @@ class Cache
      */
     public function retrieve($key, $timestamp = false)
     {
+        if ($this->_autoEraseExpired === true) {
+            $this->eraseExpired();
+        }
+
         $cachedData = $this->_loadCache();
-        (false === $timestamp) ? $type = 'data' : $type = 'time';
+
+        ($timestamp === false) ? $type = 'data' : $type = 'time';
         if (!isset($cachedData[$key][$type])) {
             return;
         }
@@ -127,6 +146,10 @@ class Cache
      */
     public function retrieveAll($meta = false)
     {
+        if ($this->_autoEraseExpired === true) {
+            $this->eraseExpired();
+        }
+
         if ($meta === false) {
             $results = array();
             $cachedData = $this->_loadCache();
@@ -147,13 +170,16 @@ class Cache
      *
      * @param string $key
      *
+     * @throws Exception
+     *
      * @return object
      */
     public function erase($key)
     {
         $cacheData = $this->_loadCache();
-        if (true === is_array($cacheData)) {
-            if (true === isset($cacheData[$key])) {
+
+        if (is_array($cacheData) === true) {
+            if (isset($cacheData[$key]) === true) {
                 unset($cacheData[$key]);
                 $cacheData = json_encode($cacheData);
                 file_put_contents($this->getCacheDir(), $cacheData);
@@ -173,14 +199,16 @@ class Cache
     public function eraseExpired()
     {
         $cacheData = $this->_loadCache();
-        if (true === is_array($cacheData)) {
+        if (is_array($cacheData) === true) {
             $counter = 0;
+
             foreach ($cacheData as $key => $entry) {
-                if (true === $this->_checkExpired($entry['time'], $entry['expire'])) {
+                if ($this->_checkExpired($entry['time'], $entry['expire']) === true) {
                     unset($cacheData[$key]);
                     ++$counter;
                 }
             }
+
             if ($counter > 0) {
                 $cacheData = json_encode($cacheData);
                 file_put_contents($this->getCacheDir(), $cacheData);
@@ -198,7 +226,8 @@ class Cache
     public function eraseAll()
     {
         $cacheDir = $this->getCacheDir();
-        if (true === file_exists($cacheDir)) {
+
+        if (file_exists($cacheDir) === true) {
             $cacheFile = fopen($cacheDir, 'w');
             fclose($cacheFile);
         }
@@ -213,7 +242,7 @@ class Cache
      */
     private function _loadCache()
     {
-        if (true === file_exists($this->getCacheDir())) {
+        if (file_exists($this->getCacheDir()) === true) {
             $file = file_get_contents($this->getCacheDir());
 
             return json_decode($file, true);
@@ -229,7 +258,7 @@ class Cache
      */
     public function getCacheDir()
     {
-        if (true === $this->_checkCacheDir()) {
+        if ($this->_checkCacheDir() === true) {
             $filename = $this->getCache();
             $filename = preg_replace('/[^0-9a-z\.\_\-]/i', '', strtolower($filename));
 
@@ -354,5 +383,19 @@ class Cache
     public function getExtension()
     {
         return $this->_extension;
+    }
+
+    /**
+     * Set auto erase behavior.
+     *
+     * @param bool $flag should we automatically expire old cached items?
+     *
+     * @return bool
+     */
+    public function autoEraseExpired($flag = true)
+    {
+        $this->_autoEraseExpired = $flag;
+
+        return $flag;
     }
 }
