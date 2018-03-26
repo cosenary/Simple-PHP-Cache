@@ -309,5 +309,19 @@ class Cache {
   public function getExtension() {
     return $this->_extension;
   }
+  
+  /**
+   * Clear All Cached Files
+   * 
+   */
+  public function clearCachedFiles(){
+    $cacheDir = $this->getCachePath();
+    $files = glob($cacheDir.'*'); // get all file names
+        foreach($files as $file){ // iterate files
+        if (is_file($file)) {
+                unlink($file);// delete file
+            } 
+    }
+  }
 
 }
